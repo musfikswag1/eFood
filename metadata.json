@@ -1,0 +1,6 @@
+{
+  "name": "eFood",
+  "description": "Multi-restaurant food delivery platform with customer ordering, real-time tracking, and delivery partner dashboard",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

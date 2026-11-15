@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="efood_bg_black">#FF080D0B</color>
+    <color name="efood_bg_emerald">#FF102B20</color>
+    <color name="efood_card">#FF17271F</color>
+    <color name="efood_yellow">#FFF5D329</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>

@@ -1,0 +1,378 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Authenticated customer profile with Bangladesh contact verification and preferences.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "displayName": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "phoneVerified": { "type": "boolean" },
+        "preferredLanguage": { "type": "string", "enum": ["en", "bn"] },
+        "role": { "type": "string", "enum": ["customer", "rider", "admin"] },
+        "isSuspended": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "displayName", "phoneVerified", "preferredLanguage", "role", "isSuspended", "createdAt", "updatedAt"]
+    },
+    "SavedAddress": {
+      "title": "SavedAddress",
+      "description": "Bangladesh delivery address with division, district, area, landmark, and coordinates.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "label": { "type": "string" },
+        "division": { "type": "string" },
+        "district": { "type": "string" },
+        "area": { "type": "string" },
+        "landmark": { "type": "string" },
+        "streetAddress": { "type": "string" },
+        "latitude": { "type": "number" },
+        "longitude": { "type": "number" },
+        "isDefault": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "label", "division", "district", "area", "streetAddress", "latitude", "longitude", "isDefault", "createdAt", "updatedAt"]
+    },
+    "FavoriteEntry": {
+      "title": "FavoriteEntry",
+      "description": "Customer favorite restaurant or food item reference.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "targetType": { "type": "string", "enum": ["RESTAURANT", "FOOD"] },
+        "targetId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "targetType", "targetId", "createdAt"]
+    },
+    "AppNotification": {
+      "title": "AppNotification",
+      "description": "Customer order and promotional notification entry.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "body": { "type": "string" },
+        "type": { "type": "string", "enum": ["ORDER", "PROMO", "REFUND", "SYSTEM"] },
+        "orderId": { "type": "string" },
+        "isRead": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "title", "body", "type", "isRead", "createdAt"]
+    },
+    "OrderRecord": {
+      "title": "OrderRecord",
+      "description": "Food delivery order with 8-stage tracking, BDT totals, payment status, and rider dispatch.",
+      "type": "object",
+      "properties": {
+        "customerId": { "type": "string" },
+        "customerName": { "type": "string" },
+        "customerPhone": { "type": "string" },
+        "restaurantId": { "type": "string" },
+        "restaurantName": { "type": "string" },
+        "riderId": { "type": "string" },
+        "riderName": { "type": "string" },
+        "riderPhone": { "type": "string" },
+        "riderLat": { "type": "number" },
+        "riderLng": { "type": "number" },
+        "riderLocationSharing": { "type": "boolean" },
+        "deliveryAddressText": { "type": "string" },
+        "deliveryArea": { "type": "string" },
+        "deliveryDistrict": { "type": "string" },
+        "deliveryLandmark": { "type": "string" },
+        "deliveryInstructions": { "type": "string" },
+        "deliveryLat": { "type": "number" },
+        "deliveryLng": { "type": "number" },
+        "itemsSummary": { "type": "string" },
+        "subtotalBdt": { "type": "number" },
+        "deliveryFeeBdt": { "type": "number" },
+        "discountBdt": { "type": "number" },
+        "taxBdt": { "type": "number" },
+        "totalBdt": { "type": "number" },
+        "promoCode": { "type": "string" },
+        "paymentMethod": { "type": "string", "enum": ["COD", "BKASH", "NAGAD", "CARD"] },
+        "paymentStatus": { "type": "string", "enum": ["PENDING", "COD_DUE", "VERIFIED", "FAILED", "REFUNDED"] },
+        "paymentReference": { "type": "string" },
+        "status": {
+          "type": "string",
+          "enum": [
+            "ORDER_PLACED",
+            "ORDER_CONFIRMED",
+            "RESTAURANT_PREPARING",
+            "FOOD_READY",
+            "RIDER_ASSIGNED",
+            "RIDER_PICKED_UP",
+            "ON_THE_WAY",
+            "DELIVERED",
+            "CANCELLED"
+          ]
+        },
+        "deliveryOtp": { "type": "string" },
+        "estimatedMinutes": { "type": "integer" },
+        "failureReason": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "customerId",
+        "customerName",
+        "customerPhone",
+        "restaurantId",
+        "restaurantName",
+        "riderId",
+        "deliveryAddressText",
+        "deliveryArea",
+        "deliveryDistrict",
+        "itemsSummary",
+        "subtotalBdt",
+        "deliveryFeeBdt",
+        "discountBdt",
+        "taxBdt",
+        "totalBdt",
+        "paymentMethod",
+        "paymentStatus",
+        "status",
+        "deliveryOtp",
+        "estimatedMinutes",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "DeliveryRequest": {
+      "title": "DeliveryRequest",
+      "description": "Non-PII rider dispatch queue entry for open deliveries.",
+      "type": "object",
+      "properties": {
+        "orderId": { "type": "string" },
+        "restaurantName": { "type": "string" },
+        "pickupArea": { "type": "string" },
+        "dropoffArea": { "type": "string" },
+        "estimatedFeeBdt": { "type": "number" },
+        "distanceKm": { "type": "number" },
+        "status": { "type": "string", "enum": ["OPEN", "CLAIMED", "CANCELLED"] },
+        "claimedByRiderId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["orderId", "restaurantName", "pickupArea", "dropoffArea", "estimatedFeeBdt", "distanceKm", "status", "claimedByRiderId", "createdAt", "updatedAt"]
+    },
+    "RiderProfile": {
+      "title": "RiderProfile",
+      "description": "Delivery partner profile with NID verification, vehicle info, online toggle, and earnings.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "fullName": { "type": "string" },
+        "phone": { "type": "string" },
+        "nidNumber": { "type": "string" },
+        "vehicleType": { "type": "string", "enum": ["BICYCLE", "MOTORBIKE", "SCOOTER", "WALKER"] },
+        "emergencyContact": { "type": "string" },
+        "photoUri": { "type": "string" },
+        "approvalStatus": { "type": "string", "enum": ["PENDING", "APPROVED", "SUSPENDED"] },
+        "isOnline": { "type": "boolean" },
+        "currentLat": { "type": "number" },
+        "currentLng": { "type": "number" },
+        "totalDeliveries": { "type": "integer" },
+        "totalEarningsBdt": { "type": "number" },
+        "commissionRate": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "fullName", "phone", "nidNumber", "vehicleType", "emergencyContact", "approvalStatus", "isOnline", "totalDeliveries", "totalEarningsBdt", "commissionRate", "createdAt", "updatedAt"]
+    },
+    "ReviewRecord": {
+      "title": "ReviewRecord",
+      "description": "Verified customer rating and review for a restaurant.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "authorName": { "type": "string" },
+        "restaurantId": { "type": "string" },
+        "orderId": { "type": "string" },
+        "rating": { "type": "number" },
+        "comment": { "type": "string" },
+        "isVisible": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "authorName", "restaurantId", "orderId", "rating", "comment", "isVisible", "createdAt"]
+    },
+    "SupportTicket": {
+      "title": "SupportTicket",
+      "description": "Customer help and complaint ticket.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "orderId": { "type": "string" },
+        "subject": { "type": "string" },
+        "message": { "type": "string" },
+        "status": { "type": "string", "enum": ["OPEN", "IN_PROGRESS", "RESOLVED"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "subject", "message", "status", "createdAt", "updatedAt"]
+    },
+    "Category": {
+      "title": "Category",
+      "description": "Admin-managed food category.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "nameBn": { "type": "string" },
+        "iconKey": { "type": "string" },
+        "sortOrder": { "type": "integer" },
+        "isActive": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "nameBn", "iconKey", "sortOrder", "isActive", "createdAt", "updatedAt"]
+    },
+    "Restaurant": {
+      "title": "Restaurant",
+      "description": "Admin-managed restaurant listing.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "cuisine": { "type": "string" },
+        "area": { "type": "string" },
+        "district": { "type": "string" },
+        "deliveryTimeMinutes": { "type": "integer" },
+        "minOrderBdt": { "type": "number" },
+        "deliveryFeeBdt": { "type": "number" },
+        "rating": { "type": "number" },
+        "reviewCount": { "type": "integer" },
+        "openHours": { "type": "string" },
+        "isOpen": { "type": "boolean" },
+        "isFeatured": { "type": "boolean" },
+        "isActive": { "type": "boolean" },
+        "imageKey": { "type": "string" },
+        "latitude": { "type": "number" },
+        "longitude": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "description", "cuisine", "area", "district", "deliveryTimeMinutes", "minOrderBdt", "deliveryFeeBdt", "rating", "reviewCount", "openHours", "isOpen", "isFeatured", "isActive", "imageKey", "createdAt", "updatedAt"]
+    },
+    "MenuItem": {
+      "title": "MenuItem",
+      "description": "Admin-managed food product with pricing, discounts, and customization metadata.",
+      "type": "object",
+      "properties": {
+        "restaurantId": { "type": "string" },
+        "categoryId": { "type": "string" },
+        "name": { "type": "string" },
+        "nameBn": { "type": "string" },
+        "description": { "type": "string" },
+        "priceBdt": { "type": "number" },
+        "discountPriceBdt": { "type": "number" },
+        "isAvailable": { "type": "boolean" },
+        "isPopular": { "type": "boolean" },
+        "isBestSeller": { "type": "boolean" },
+        "isRecommended": { "type": "boolean" },
+        "isActive": { "type": "boolean" },
+        "imageKey": { "type": "string" },
+        "rating": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["restaurantId", "categoryId", "name", "description", "priceBdt", "isAvailable", "isActive", "imageKey", "createdAt", "updatedAt"]
+    },
+    "PromoBanner": {
+      "title": "PromoBanner",
+      "description": "Admin-managed promotional banner.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "subtitle": { "type": "string" },
+        "badgeText": { "type": "string" },
+        "promoCode": { "type": "string" },
+        "imageKey": { "type": "string" },
+        "sortOrder": { "type": "integer" },
+        "isActive": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "subtitle", "badgeText", "imageKey", "sortOrder", "isActive", "createdAt", "updatedAt"]
+    },
+    "Coupon": {
+      "title": "Coupon",
+      "description": "Admin-managed promo code coupon.",
+      "type": "object",
+      "properties": {
+        "code": { "type": "string" },
+        "title": { "type": "string" },
+        "discountType": { "type": "string", "enum": ["PERCENT", "FLAT"] },
+        "discountValue": { "type": "number" },
+        "minOrderBdt": { "type": "number" },
+        "maxDiscountBdt": { "type": "number" },
+        "isActive": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["code", "title", "discountType", "discountValue", "minOrderBdt", "maxDiscountBdt", "isActive", "createdAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Customer profiles scoped to the authenticated user."
+    },
+    "/users/{userId}/addresses/{addressId}": {
+      "schema": { "$ref": "#/entities/SavedAddress" },
+      "description": "Customer saved Bangladesh delivery addresses."
+    },
+    "/users/{userId}/favorites/{favId}": {
+      "schema": { "$ref": "#/entities/FavoriteEntry" },
+      "description": "Customer saved favorite restaurants and dishes."
+    },
+    "/users/{userId}/notifications/{notificationId}": {
+      "schema": { "$ref": "#/entities/AppNotification" },
+      "description": "Customer order and campaign notifications."
+    },
+    "/orders/{orderId}": {
+      "schema": { "$ref": "#/entities/OrderRecord" },
+      "description": "Active and historical food delivery orders."
+    },
+    "/delivery_requests/{requestId}": {
+      "schema": { "$ref": "#/entities/DeliveryRequest" },
+      "description": "Open delivery dispatch queue for approved riders."
+    },
+    "/riders/{riderId}": {
+      "schema": { "$ref": "#/entities/RiderProfile" },
+      "description": "Delivery partner profiles and verification status."
+    },
+    "/reviews/{reviewId}": {
+      "schema": { "$ref": "#/entities/ReviewRecord" },
+      "description": "Customer reviews and ratings for restaurants."
+    },
+    "/support_tickets/{ticketId}": {
+      "schema": { "$ref": "#/entities/SupportTicket" },
+      "description": "Customer support tickets."
+    },
+    "/categories/{categoryId}": {
+      "schema": { "$ref": "#/entities/Category" },
+      "description": "Admin-managed food categories."
+    },
+    "/restaurants/{restaurantId}": {
+      "schema": { "$ref": "#/entities/Restaurant" },
+      "description": "Admin-managed restaurants."
+    },
+    "/menu_items/{itemId}": {
+      "schema": { "$ref": "#/entities/MenuItem" },
+      "description": "Admin-managed restaurant menu products."
+    },
+    "/banners/{bannerId}": {
+      "schema": { "$ref": "#/entities/PromoBanner" },
+      "description": "Admin-managed promotional banners."
+    },
+    "/coupons/{couponId}": {
+      "schema": { "$ref": "#/entities/Coupon" },
+      "description": "Admin-managed discount promo codes."
+    }
+  }
+}
